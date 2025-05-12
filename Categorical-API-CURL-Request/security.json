@@ -1,0 +1,12 @@
+curl --location --request POST 'https://9oirywodu1.execute-api.ap-south-1.amazonaws.com/prod/process-ticket' \
+--header 'User-Agent: Apidog/1.0.0 (https://apidog.com)' \
+--header 'Content-Type: application/json' \
+--header 'Accept: */*' \
+--header 'Host: 9oirywodu1.execute-api.ap-south-1.amazonaws.com' \
+--header 'Connection: keep-alive' \
+--data-raw '{
+  "ticketId": "613416",
+  "ticketSubject": "Re: CERT-In Vulnerability Note - Jenkins High Vulnerability",
+  "ticketBody": "This is a security-related request. CERT-In has issued a high-severity vulnerability advisory for Jenkins. Please review and confirm the currently running Jenkins versions in both the New and Old AWS accounts. We need to ensure that no vulnerable versions are in use, as this could pose a risk of unauthorized access or system compromise.\n\nRelevant context: CERT-In vulnerability, Jenkins CVEs, potential remote code execution.\n\nKindly take necessary steps to identify and mitigate this vulnerability.",
+  "customerEmail": "abeer.shrivastava@annapurna.net.in"
+}'
