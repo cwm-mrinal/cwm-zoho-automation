@@ -1,0 +1,12 @@
+curl --location --request POST 'https://9oirywodu1.execute-api.ap-south-1.amazonaws.com/prod/process-ticket' \
+--header 'User-Agent: Apidog/1.0.0 (https://apidog.com)' \
+--header 'Content-Type: application/json' \
+--header 'Accept: */*' \
+--header 'Host: 9oirywodu1.execute-api.ap-south-1.amazonaws.com' \
+--header 'Connection: keep-alive' \
+--data-raw '{
+  "ticketId": "613301",
+  "ticketSubject": "Optimize EC2 cost",
+  "ticketBody": "Hi Team,\n\nWe'\''ve observed a significant increase in our AWS billing over the last two weeks, primarily related to EC2 usage under the project \"Project J&F\". Our monthly EC2 charges have nearly doubled compared to the previous month, and we haven'\''t made any major infrastructure changes that should explain this.\n\nCurrently, we have several EC2 instances running in ap-south-1 and us-east-1 regions. Some are being used for backend processing and a few for staging/testing. It'\''s possible that some instances are running 24/7 without actually being utilized efficiently.\n\nCould you please help us identify areas where we can optimize EC2 usage and reduce costs? We'\''re particularly interested in:\n\n- Identifying idle or underutilized instances\n- Recommendations on right-sizing\n- Using Reserved Instances or Savings Plans\n- Suggestions for leveraging Spot Instances where applicable\n- Automation ideas for shutting down instances during non-business hours\n\nAny detailed suggestions or tools we should explore would be greatly appreciated.",
+  "customerEmail": "mrinal.b@cloudworkmates.com"
+}'
