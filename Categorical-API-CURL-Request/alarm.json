@@ -1,0 +1,12 @@
+curl --location --request POST 'https://9oirywodu1.execute-api.ap-south-1.amazonaws.com/prod/process-ticket' \
+--header 'User-Agent: Apidog/1.0.0 (https://apidog.com)' \
+--header 'Content-Type: application/json' \
+--header 'Accept: */*' \
+--header 'Host: 9oirywodu1.execute-api.ap-south-1.amazonaws.com' \
+--header 'Connection: keep-alive' \
+--data-raw '{
+  "ticketId": "613565",
+  "ticketSubject": "ALARM: \"GenupathLab-Prod-DB-Server-Pvt-1b-Memory-85%-#Alarm\" in Asia Pacific (Mumbai)",
+  "ticketBody": "You are receiving this email because your Amazon CloudWatch Alarm \"ALARM: \\\"GenupathLab-Prod-DB-Server-Pvt-1b-Memory-85%-#Alarm\\\" in Asia Pacific (Mumbai)\" in the Asia Pacific (Mumbai) region has entered the ALARM state, because \"Threshold Crossed: 1 out of the last 1 datapoints [85.00460433959961 (10/04/25 15:45:00)] was greater than or equal to the threshold (85.0) (minimum 1 datapoint for OK -> ALARM transition).\" at \"Thursday 10 April, 2025 15:50:19 UTC\".\n\nAlarm Details:\n- Name: ALARM: \"GenupathLab-Prod-DB-Server-Pvt-1b-Memory-85%-#Alarm\" in Asia Pacific (Mumbai)\n- Timestamp: Thursday 10 April, 2025 15:50:19 UTC\n- AWS Account: 415348423851\n- MetricNamespace: CWAgent\n- MetricName: Memory % Committed Bytes In Use\n- Dimensions: [{'\''value'\'': '\''i-07e8a098bd73f9d1a'\'', '\''name'\'': '\''InstanceId'\''}, {'\''value'\'': '\''ami-0fc347be2db47c18d'\'', '\''name'\'': '\''ImageId'\''}, {'\''value'\'': '\''Memory'\'', '\''name'\'': '\''objectname'\''}, {'\''value'\'': '\''r6a.large'\'', '\''name'\'': '\''InstanceType'\''}]\n- Period: 300 seconds\n- Statistic: AVERAGE\n- Unit: None\n\nThreshold:\n- The alarm is in the ALARM state when the metric is GreaterThanOrEqualToThreshold 85.0 for at least 1 of the last 1 period(s) of 300 seconds.\n\nFree Memory: 1.3 GB\nTotal Memory: 16.8 GB\n\nTop 5 processes consuming high memory:-\n+---------+--------+----------+----------+----------+------+----+--------------------------+\n| Handles | NPM(K) | PM(K) | WS(K) | CPU(s) | Id | SI | ProcessName |\n+---------+--------+----------+----------+----------+------+----+--------------------------+\n| 533 | 56 | 1.4 GB | 752.4 MB | 482.6 kB | 4424 | 0 | ReportingServicesService |\n| 1946 | 104 | 345.4 MB | 519.7 MB | 301.3 kB | 4764 | 2 | explorer |\n| 723 | 215 | 299.4 MB | 240.6 MB | 1,212.59 | 6516 | 0 | MsMpEng |\n| 642 | 32 | 278.9 MB | 201.7 MB | 7,168.39 | 3272 | 0 | RSHostingService |\n| 0 | 22 | 548.9 kB | 200.0 MB | 90.8 kB | 84 | 0 | Registry |",
+  "customerEmail": "vkhaitan@sastasundar.com"
+}'
