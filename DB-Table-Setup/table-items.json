@@ -1,0 +1,23 @@
+{
+  "AccountId": {
+    "S": "572905478820"
+  },
+  "AccountName": {
+    "S": "LXME Prod"
+  },
+  "CustomerEmailIds": {
+    "S": "harish.r@lxme.in,ridhi.r@lxme.in"
+  },
+  "ProjectId": {
+    "S": "PJT-001"
+  },
+  "TeamId": {
+    "S": "TEAM-7"
+  },
+  "TeamName": {
+    "S": "DevOps Team"
+  },
+  "TeamsURL": {
+    "S": "https://teams.microsoft.com/l/team/19%3aexamplelink"
+  }
+}
