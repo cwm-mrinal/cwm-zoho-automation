@@ -2,6 +2,7 @@ import json
 import os
 import boto3
 import logging
+import requests
 
 # Logger Setup
 logger = logging.getLogger()
@@ -35,7 +36,6 @@ translate = boto3.client("translate")
 # Environment variables
 SNS_TOPIC_ARN = os.environ.get("SNS_TOPIC_ARN")
 DLQ_URL = os.environ.get("DLQ_URL")
-
 
 def lambda_handler(event, context):
     logger.info("Received event: %s", json.dumps(event))
@@ -133,10 +133,46 @@ Customer Ticket:
 
         reply_text = reply_text.replace("\\n", "\n")
 
-        # For "custom" category, send email
+        # For "custom" category, validate from DB and send to Teams
         if classification == "custom":
-            logger.info("Sending email via SNS...")
-            send_email_via_sns(customer_email, ticket_subject, ticket_body, reply_text)
+            logger.info("Validating customer email in DynamoDB table...")
+
+            dynamodb = boto3.resource('dynamodb')
+            table = dynamodb.Table("CWM-Account-Details-Table")
+
+            try:
+                response = table.scan(
+                    FilterExpression=boto3.dynamodb.conditions.Attr("CustomerEmailIds").contains(customer_email)
+                )
+                items = response.get("Items", [])
+                if not items:
+                    logger.warning("Account validation failed. Email not found in DynamoDB.")
+                    return {
+                        "statusCode": 403,
+                        "body": json.dumps({
+                            "status": "denied",
+                            "message": "Account validation failed. Contact support."
+                        })
+                    }
+
+                item = items[0]
+                teams_url = item.get("TeamsURL")
+                if not teams_url:
+                    logger.error("TeamsURL not found in validated item.")
+                    return {
+                        "statusCode": 500,
+                        "body": json.dumps({"error": "TeamsURL missing for validated account."})
+                    }
+
+                logger.info("Account validated. Sending notification to Teams webhook.")
+                send_to_teams_webhook(teams_url, ticket_subject, ticket_body, reply_text)
+
+            except Exception as db_error:
+                logger.error("DynamoDB validation error: %s", str(db_error))
+                return {
+                    "statusCode": 500,
+                    "body": json.dumps({"error": "DynamoDB validation failed."})
+                }
 
         return {
             "statusCode": 200,
@@ -231,3 +267,33 @@ Workmates Support Team
     )
 
     logger.info("Email sent via SNS. Message ID: %s", response['MessageId'])
+
+
+def send_to_teams_webhook(teams_url, subject, original_body, reply_text):
+    message_card = {
+        "@type": "MessageCard",
+        "@context": "http://schema.org/extensions",
+        "summary": subject,
+        "themeColor": "0076D7",
+        "title": f"Support Ticket: {subject}",
+        "sections": [
+            {
+                "activityTitle": "Customer Ticket",
+                "text": f"{original_body}"
+            },
+            {
+                "activityTitle": "Agent Reply",
+                "text": f"{reply_text}"
+            }
+        ]
+    }
+
+    response = requests.post(
+        teams_url,
+        headers={"Content-Type": "application/json"},
+        data=json.dumps(message_card)
+    )
+
+    if response.status_code != 200:
+        raise Exception(f"Teams webhook failed: {response.status_code} - {response.text}")
+    logger.info("Message sent to Teams webhook.")
